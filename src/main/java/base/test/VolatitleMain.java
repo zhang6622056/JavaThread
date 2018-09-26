@@ -13,26 +13,17 @@ public class VolatitleMain {
 
 
     public static void main(String[] args) throws InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(0);
-
         VolatileRunnale volatileRunnale = new VolatileRunnale();
-
-
-        for (int i = 0 ; i < 10000; i++){
-            new Thread(volatileRunnale).start();
-            new Thread(volatileRunnale).start();
-            new Thread(volatileRunnale).start();
-            new Thread(volatileRunnale).start();
-            new Thread(volatileRunnale).start();
+        for (int i = 0 ; i < 1000; i++){
             new Thread(volatileRunnale).start();
             new Thread(volatileRunnale).start();
             new Thread(volatileRunnale).start();
         }
 
-        //
         Thread.sleep(3000L);
-//        System.out.println("int 型变量："+volatileRunnale.getA());
+        System.out.println("int 型变量："+volatileRunnale.getA());
     }
+
 
 
 }
