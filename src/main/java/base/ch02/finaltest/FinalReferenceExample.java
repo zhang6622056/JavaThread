@@ -1,4 +1,4 @@
-package base.ch02;
+package base.ch02.finaltest;
 
 /**
  * final域为引用类型的内存语义

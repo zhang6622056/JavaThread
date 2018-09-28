@@ -1,4 +1,4 @@
-package base.ch02;
+package base.ch02.finaltest;
 
 /**
  * -禁止把final域的写重排序到构造函数之外   finalField = 1;不能在构造函数之外。
