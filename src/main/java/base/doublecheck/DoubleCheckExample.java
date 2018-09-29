@@ -2,13 +2,16 @@ package base.doublecheck;
 
 /**
  * 双重锁定案例......
+ * 关键点在于重排序。
+ * synchronized 内部是可以重排序的！！！！
  *
- *
- * Created by admin on 2018-09-28.
+ * Created by Nero on 2018-09-28.
  */
 public class DoubleCheckExample {
 
     private static DoubleCheckExample instance;
+
+    private static volatile int control = 0;
 
 
     /****
@@ -32,19 +35,14 @@ public class DoubleCheckExample {
      */
     public static DoubleCheckExample getInstance(){
         if(instance == null){
-            //为了保证尽可能小的锁力度，我们将锁代码块加到如下位置
-
             synchronized (DoubleCheckExample.class){
-                instance = new DoubleCheckExample();
+                if(instance == null){
+                    instance = new DoubleCheckExample();
+                }
+                control = 3;
+                //storeload
             }
-
         }
         return instance;
     }
-
-
-
-
-
-
 }
