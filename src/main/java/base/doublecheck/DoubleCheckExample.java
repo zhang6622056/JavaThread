@@ -2,8 +2,8 @@ package base.doublecheck;
 
 /**
  * 双重锁定案例......
- *
- *
+ * <p>
+ * <p>
  * Created by admin on 2018-09-28.
  */
 public class DoubleCheckExample {
@@ -27,24 +27,30 @@ public class DoubleCheckExample {
 
 
     /***
+     *  double check 错误理解.
+     *  线程AB同时进入方法，线程A获取锁
      *
+     *  一个线程争抢到锁，并且进入逻辑执行，
+     *  持有锁线程执行逻辑。
+     *  但最后一步   instance = new DoubleCheckExample(); 并非原子操作，并且可能进行重排序
+     *  如果指令重排序，那么很有可能对象引用先于对象初始化。
+     *  如此第二个线程进入判定，依然为空
+     *
+     *  解决方案-使得相应new对象为volatile对象，禁止重排序。插入相关内存屏障，保证原子性，可见性，执行顺序
      * @return
      */
-    public static DoubleCheckExample getInstance(){
-        if(instance == null){
-            //为了保证尽可能小的锁力度，我们将锁代码块加到如下位置
-
-            synchronized (DoubleCheckExample.class){
-                instance = new DoubleCheckExample();
+    public static DoubleCheckExample getInstance() {
+        if (instance == null) {
+            //线程AB同时到此
+            synchronized (DoubleCheckExample.class) {
+                //一个线程持有，执行完毕。
+                if (instance == null) {
+                    instance = new DoubleCheckExample();
+                }
             }
-
         }
         return instance;
     }
-
-
-
-
 
 
 }
